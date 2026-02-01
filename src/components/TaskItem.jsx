@@ -44,6 +44,8 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
     <li
       className={`task-item ${task.completed ? "is-completed" : ""}`}
       data-task-id={task.id}
+      role="listitem"
+      aria-label={task.text}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
         <input

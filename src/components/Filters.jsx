@@ -42,10 +42,13 @@ export default function Filters({
       </div>
 
       <div className="filters__meta">
-        <span className="filters__count">{activeCount} items left</span>
+        <span className="filters__count" role="status" aria-live="polite">
+          {activeCount} items left
+        </span>
         <button
           type="button"
           className="filters__clear"
+          aria-label="Clear completed tasks"
           onClick={() => onClearCompleted?.()}
         >
           Clear Completed
