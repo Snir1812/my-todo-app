@@ -5,8 +5,6 @@ import TaskInput from "./components/TaskInput";
 import TaskList from "./components/TaskList";
 import Filters from "./components/Filters";
 
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 // Named imports must match the exported symbols from the utils files
@@ -65,15 +63,6 @@ function App() {
 
   return (
     <div id="app-root">
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
       <h1>Task Manager — (Phase 3: full CRUD)</h1>
 
       <div className="card">
