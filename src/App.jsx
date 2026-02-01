@@ -22,6 +22,47 @@ function App() {
     saveTasks(tasks);
   }, [tasks]);
 
+  // --- Business logic (Phase 3) -------------------------------------------------
+  const [filter, setFilter] = useState("all"); // 'all' | 'active' | 'completed'
+
+  const addTask = (text) => {
+    const trimmed = String(text ?? "").trim();
+    if (!trimmed) return;
+    const newTask = {
+      id: genId(),
+      text: trimmed,
+      completed: false,
+      createdAt: Date.now(),
+    };
+    setTasks((s) => [newTask, ...s]);
+  };
+
+  const toggleTask = (id) =>
+    setTasks((s) =>
+      s.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+    );
+  const deleteTask = (id) => setTasks((s) => s.filter((t) => t.id !== id));
+  const updateTask = (id, newText) => {
+    const trimmed = String(newText ?? "").trim();
+    if (!trimmed) return;
+    setTasks((s) => s.map((t) => (t.id === id ? { ...t, text: trimmed } : t)));
+  };
+  const clearCompleted = () => setTasks((s) => s.filter((t) => !t.completed));
+
+  const visibleTasks = (() => {
+    switch (filter) {
+      case "active":
+        return tasks.filter((t) => !t.completed);
+      case "completed":
+        return tasks.filter((t) => t.completed);
+      default:
+        return tasks;
+    }
+  })();
+
+  const activeCount = tasks.filter((t) => !t.completed).length;
+  // -------------------------------------------------------------------------------
+
   return (
     <div id="app-root">
       <div>
@@ -33,49 +74,29 @@ function App() {
         </a>
       </div>
 
-      <h1>Task Manager — (logic + persistence: Phase 1)</h1>
+      <h1>Task Manager — (Phase 3: full CRUD)</h1>
 
       <div className="card">
-        <TaskInput
-          placeholder="Add a new task"
-          onCreate={(text) => {
-            // App-level handler: create and persist a new task
-            const newTask = {
-              id: genId(),
-              text,
-              completed: false,
-              createdAt: Date.now(),
-            };
-            setTasks((s) => [newTask, ...s]);
-          }}
-        />
+        <TaskInput placeholder="Add a new task" onCreate={addTask} />
 
         <TaskList
-          tasks={tasks}
-          onToggle={(id) => {
-            setTasks((s) =>
-              s.map((t) =>
-                t.id === id ? { ...t, completed: !t.completed } : t,
-              ),
-            );
-          }}
-          onEdit={(id) => console.log("onEdit", id)}
-          onDelete={(id) => console.log("onDelete", id)}
+          tasks={visibleTasks}
+          onToggle={toggleTask}
+          onEdit={updateTask}
+          onDelete={deleteTask}
         />
 
         <Filters
-          activeFilter="all"
-          activeCount={tasks.filter((t) => !t.completed).length}
-          onFilterChange={(f) => console.log("filter->", f)}
-          onClearCompleted={() =>
-            setTasks((s) => s.filter((t) => !t.completed))
-          }
+          activeFilter={filter}
+          activeCount={activeCount}
+          onFilterChange={setFilter}
+          onClearCompleted={clearCompleted}
         />
 
         <p style={{ marginTop: 12, fontSize: 13, color: "#666" }}>
-          Verification: ensure TaskInput calls `onCreate`, TaskList renders
-          items and TaskItem events (`onToggle`, `onEdit`, `onDelete`) print to
-          console.
+          Verification: add / edit / toggle / delete tasks and check persistence
+          after a refresh. Use filters to view subsets and "Clear Completed" to
+          remove finished tasks.
         </p>
       </div>
 

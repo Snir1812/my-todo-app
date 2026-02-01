@@ -1,18 +1,20 @@
-import TaskItem from './TaskItem'
+import TaskItem from "./TaskItem";
 
 /**
- * TaskList (skeleton)
+ * TaskList — renders the provided tasks (no internal state)
  * Props:
  * - tasks: Task[]
- * - onToggle, onEdit, onDelete
+ * - onToggle(id), onEdit(id, text), onDelete(id)
  */
 export default function TaskList({ tasks = [], onToggle, onEdit, onDelete }) {
   if (!tasks.length) {
-    return <div className="task-list__empty">No tasks yet — add one above.</div>
+    return (
+      <div className="task-list__empty">No tasks yet — add one above.</div>
+    );
   }
 
   return (
-    <ul className="task-list" aria-label="Task list">
+    <ul className="task-list" aria-label="Task list" data-testid="task-list">
       {tasks.map((t) => (
         <TaskItem
           key={t.id}
@@ -23,5 +25,5 @@ export default function TaskList({ tasks = [], onToggle, onEdit, onDelete }) {
         />
       ))}
     </ul>
-  )
+  );
 }
