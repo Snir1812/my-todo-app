@@ -63,7 +63,7 @@ function App() {
 
   return (
     <div id="app-root">
-      <h1>Task Manager — (Phase 3: full CRUD)</h1>
+      <h1>Task Manager</h1>
 
       <div className="card">
         <TaskInput placeholder="Add a new task" onCreate={addTask} />
@@ -82,16 +82,16 @@ function App() {
           onClearCompleted={clearCompleted}
         />
 
-        <p style={{ marginTop: 12, fontSize: 13, color: "#666" }}>
+        {/* <p style={{ marginTop: 12, fontSize: 13, color: "#666" }}>
           Verification: add / edit / toggle / delete tasks and check persistence
           after a refresh. Use filters to view subsets and "Clear Completed" to
           remove finished tasks.
-        </p>
+        </p> */}
       </div>
 
-      <p className="read-the-docs">
+      {/* <p className="read-the-docs">
         Follow the TASK.md & PRD.md for next steps.
-      </p>
+      </p> */}
     </div>
   );
 }
