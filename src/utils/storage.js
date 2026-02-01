@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'todo.tasks.v1'
+const STORAGE_KEY = "todo.tasks.v1";
 
 /**
  * Lightweight runtime validation for a Task-like object.
@@ -7,11 +7,11 @@ const STORAGE_KEY = 'todo.tasks.v1'
 function isValidTask(obj) {
   return (
     obj &&
-    typeof obj === 'object' &&
-    typeof obj.id === 'string' &&
-    typeof obj.text === 'string' &&
-    typeof obj.completed === 'boolean'
-  )
+    typeof obj === "object" &&
+    typeof obj.id === "string" &&
+    typeof obj.text === "string" &&
+    typeof obj.completed === "boolean"
+  );
 }
 
 /**
@@ -20,9 +20,9 @@ function isValidTask(obj) {
  */
 function saveTasks(tasks) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   } catch (err) {
-    console.warn('saveTasks: failed to write to localStorage', err)
+    console.warn("saveTasks: failed to write to localStorage", err);
   }
 }
 
@@ -36,46 +36,51 @@ function saveTasks(tasks) {
  */
 function loadTasks() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return []
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
 
-    const parsed = JSON.parse(raw)
+    const parsed = JSON.parse(raw);
 
     if (!Array.isArray(parsed)) {
       console.warn(
         `loadTasks: unexpected data type for ${STORAGE_KEY} — resetting to []`,
         parsed,
-      )
+      );
       try {
-        localStorage.removeItem(STORAGE_KEY)
+        localStorage.removeItem(STORAGE_KEY);
       } catch (_) {
         /* ignore */
       }
-      return []
+      return [];
     }
 
     // Filter and keep only valid tasks — helps recover from partial corruption
-    const valid = parsed.filter(isValidTask)
+    const valid = parsed.filter(isValidTask);
     if (valid.length !== parsed.length) {
-      console.warn('loadTasks: found malformed task entries — cleaning stored data')
+      console.warn(
+        "loadTasks: found malformed task entries — cleaning stored data",
+      );
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(valid))
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(valid));
       } catch (err) {
-        console.warn('loadTasks: failed to persist cleaned data', err)
+        console.warn("loadTasks: failed to persist cleaned data", err);
       }
     }
 
-    return valid
+    return valid;
   } catch (err) {
-    console.warn('loadTasks: failed to parse localStorage — clearing corrupt data', err)
+    console.warn(
+      "loadTasks: failed to parse localStorage — clearing corrupt data",
+      err,
+    );
     try {
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_KEY);
     } catch (_) {
       /* ignore */
     }
-    return []
+    return [];
   }
 }
 
 // Explicit named exports
-export { STORAGE_KEY, loadTasks, saveTasks }
+export { STORAGE_KEY, loadTasks, saveTasks };
